@@ -2,11 +2,12 @@
 
 <h1>Tweets</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Message</th>
       <th>User</th>
+      <th>Profile Pic</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -15,10 +16,13 @@
     <% @tweets.each do |tweet| %>
       <tr>
         <td><%= tweet.message %></td>
-        <td><%= tweet.user_id %></td>
+        <td>@<%= link_to tweet.user.username, show_user_path(id: tweet.user.id) %></td>
+        <td><%= image_tag tweet.user.avatar.url(:thumb)%></td>
         <td><%= link_to 'Show', tweet %></td>
+        <%if user_signed_in? && current_user.id == tweet.user.id %>
         <td><%= link_to 'Edit', edit_tweet_path(tweet) %></td>
         <td><%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

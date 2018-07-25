@@ -1,0 +1,25 @@
+<h1>@ <%= @user.username %>'s Profile & Tweets</h1>
+
+<div>
+	<%= image_tag @user.avatar.url(:show) %>
+</div>
+<p> Name! <%=@user.name %></p>
+<p> Location: <%=@user.location %></p>
+<p> Bio: <%= @user.bio %></p>
+
+<p>
+    <% if current_user.following.include?(@user.id) %>
+        <%= link_to "Unfollow", unfollow_path(id: @user.id), class: "btn btn-danger" %>
+    <% else %>
+        <% if current_user.id != @user.id %>
+	    <%= link_to "Follow", now_following_path(id: @user.id), class: "btn btn-primary" %>
+	<% end %>
+    <% end %>
+</p>
+
+<% @user.tweets.each do |tweet| %>
+    <div class="well">
+        <p>At <%= tweet.created_at.strftime('%B %e, %Y at %l: %M %P') %>, @ <%= tweet.user.username %> said ...</p>
+		<p><%= tweet.message %></p>
+    </div>
+<% end %>
