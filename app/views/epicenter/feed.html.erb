@@ -3,13 +3,22 @@
 
 <div>
     <% @following_tweets.each do |tweet| %>
-      <div>
-	    <p>
-	    	<%= image_tag tweet.user.avatar.url(:thumb) %>
-	    	@<%= link_to tweet.user.username, show_user_path(id: tweet.user.id) %> said...</p>
-	    	<div id="feedwell" class="well">
-	    		<p><%= tweet.message.html_safe %></p>
-	    	</div>
-			</div>
+    	<div class="row">
+    		<div class="col-md-8">
+			    <p>
+			    	<%= image_tag tweet.user.avatar.url(:thumb) %>
+			    	@<%= link_to tweet.user.username, show_user_path(id: tweet.user.id) %> said...</p>
+			    	
+					</div>
+    	</div>
+    	<div class="row">
+    		<div class="col-md-1"></div>
+    		<div class="col-md-8">
+    			<div id="feedwell" class="well well-sm">
+			    		<p><%= tweet.message.html_safe %></p>
+			    	</div>
+    		</div>
+    	</div>
+      
     <% end %>
 </div>

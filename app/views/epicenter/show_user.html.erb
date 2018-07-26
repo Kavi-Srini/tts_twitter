@@ -1,25 +1,64 @@
 <h1>@ <%= @user.username %>'s Profile & Tweets</h1>
 
-<div>
-	<%= image_tag @user.avatar.url(:show) %>
-</div>
-<p> Name! <%=@user.name %></p>
-<p> Location: <%=@user.location %></p>
-<p> Bio: <%= @user.bio %></p>
+<div class="well well-lg">
+    <!-- <div class="row">
+        <div class=" col-md-4">
+            <%= image_tag @user.avatar.url(:show) %>
+        </div> 
 
-<p>
-    <% if current_user.following.include?(@user.id) %>
-        <%= link_to "Unfollow", unfollow_path(id: @user.id), class: "btn btn-danger" %>
-    <% else %>
-        <% if current_user.id != @user.id %>
-	    <%= link_to "Follow", now_following_path(id: @user.id), class: "btn btn-primary" %>
-	<% end %>
-    <% end %>
-</p>
+        <div class="col-md-8">
+           <p> Name! <%=@user.name %></p>
+            <p> Location: <%=@user.location %></p>
+            <p> Bio: <%= @user.bio %></p>
+
+            <p>
+                <% if current_user.following.include?(@user.id) %>
+                    <%= link_to "Unfollow", unfollow_path(id: @user.id), class: "btn pull-right btn-danger" %>
+                <% else %>
+                    <% if current_user.id != @user.id %>
+                    <%= link_to "Follow", now_following_path(id: @user.id), class: "btn pull-right btn-primary" %>
+                <% end %>
+                <% end %>
+            </p> 
+        </div>
+    </div> -->
+
+    <div class="media">
+        <div class="media-left media-top">
+             <%= image_tag @user.avatar.url(:show) %>
+        </div>
+        <div class="media-body">
+            <h4 class="media-headling"><%=@user.name %></h4>
+            <p> Location: <%=@user.location %></p>
+            <p> Bio: <%= @user.bio %></p>
+
+            <p>
+                <% if current_user.following.include?(@user.id) %>
+                    <%= link_to "Unfollow", unfollow_path(id: @user.id), class: "btn pull-right btn-danger" %>
+                <% else %>
+                    <% if current_user.id != @user.id %>
+                    <%= link_to "Follow", now_following_path(id: @user.id), class: "btn pull-right btn-primary" %>
+                <% end %>
+                <% end %>
+            </p> 
+        </div>
+    </div>
+    
+</div>
+
+
 
 <% @user.tweets.each do |tweet| %>
-    <div class="well">
-        <p>At <%= tweet.created_at.strftime('%B %e, %Y at %l: %M %P') %>, @ <%= tweet.user.username %> said ...</p>
-		<p><%= tweet.message %></p>
+    <div class="col-lg-10">
+       <p>At <%= tweet.created_at.strftime('%B %e, %Y at %l: %M %P') %>, @ <%= tweet.user.username %> said ...</p>
+        <div class="well">
+            <p><%= tweet.message.html_safe %></p>
+            <div class="pull-right">
+                <%= link_to 'Edit', edit_tweet_path(tweet) %>
+                <%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' } %> 
+            </div>
+            
+        </div> 
     </div>
+    
 <% end %>

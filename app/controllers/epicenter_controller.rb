@@ -1,8 +1,10 @@
 class EpicenterController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:feed]
 
   def feed
+
+    if user_signed_in?
 	  @following_tweets = []
 
 	  Tweet.all.each do |tweet|
@@ -10,6 +12,9 @@ class EpicenterController < ApplicationController
 	      @following_tweets.push(tweet)
 	    end
 	  end
+    else
+      redirect_to tweets_path
+    end
 	end
 
   def show_user
@@ -31,5 +36,9 @@ class EpicenterController < ApplicationController
     current_user.save
 
     redirect_to show_user_path(id: params[:id])   
+  end
+
+  def tag_tweets
+    @tag = Tag.find(params[:id])
   end
 end

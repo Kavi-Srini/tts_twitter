@@ -41,14 +41,29 @@
                   <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
                 </ul>
               </li>
-            <% end %>
-            <% %>
+            <% else%>
+              <<li><%= link_to "Sign In", new_user_session_path %> </li>
+            <% end%>
           </ul>
         </div>
       </div>
     </nav>
-    <div class="container" >
-      <%= yield %>
+
+  <!--End of Navbar -->
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="well">
+          <% if user_signed_in? && current_user.avatar.blank? == false %>
+             <%= image_tag current_user.avatar.url(:show), class: "user-pic-nav" %>
+          <% end %>  
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <%= yield %>
+      </div>
+      <div class="col-lg-3">
+        <div class="well"> This is where what's trending goes</div>
+      </div>
     </div>
     
   </body>
