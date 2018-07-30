@@ -16,16 +16,23 @@ class Tweet < ApplicationRecord
 
   def link_check
   	check = false
-  	if self.message.include?("https://")
+  	if (self.message.include?("https://")) || (self.message.include?("http://")) || (self.message.include?("www."))
   		check = true
-  	elsif self.message.include?("http://")
-		  check = true
   	end
 
   	if check == true
     	arr = self.message.split
-    	index = arr.map{ |x| x.include? "http"}.index(true)
+
+      if self.message.include?("http")
+        index = arr.map{ |x| x.include? "http"}.index(true)
         self.link = arr[index]
+      elsif self.message.include?("www")
+        index = arr.map{ |x| x.include? "www"}.index(true)
+        self.link = "https://#{arr[index]}"
+      end
+    	
+      
+        
         if arr[index].length > 23
     	    arr[index] = "#{arr[index][0..19]}..."	
         end
@@ -37,6 +44,7 @@ class Tweet < ApplicationRecord
   def apply_link
   	arr = self.message.split
   	index = arr.map{|x| x.include? "http"}.index(true)
+    index = arr.map{ |x| x.include? "www"}.index(true)
 
   	if index
   		url = arr[index]

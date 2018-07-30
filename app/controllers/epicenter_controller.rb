@@ -3,6 +3,7 @@ class EpicenterController < ApplicationController
   before_action :authenticate_user!, except: [:feed]
 
   def feed
+    @tweet = Tweet.new
 
     if user_signed_in?
 	  @following_tweets = []
@@ -19,6 +20,7 @@ class EpicenterController < ApplicationController
 
   def show_user
   	@user = User.find(params[:id])
+    @tweet = Tweet.new
   end
 
   def now_following
@@ -41,4 +43,37 @@ class EpicenterController < ApplicationController
   def tag_tweets
     @tag = Tag.find(params[:id])
   end
+
+  def all_users
+    @users = User.all
+    # or:
+    # User.order(:username)
+    # User.order(:name)
+    # or whatever order you'd
+    # like to put them in
+  end
+
+    def following
+    @user = User.find(params[:id])
+    @users = []
+
+    User.all.each do |user|
+      if @user.following.include?(user.id)
+        @users.push(user)
+      end
+    end
+  end
+
+  def followers
+    @user =  User.find(params[:id])
+    @users = []
+
+    User.all.each do |user|
+      if user.following.include?(@user.id)
+        @users.push(user)
+      end
+    end
+  end
+
+  
 end

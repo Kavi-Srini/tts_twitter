@@ -1,0 +1,29 @@
+<div class="row">
+    <% @users.each do |user|%>
+    <div class="col-lg-6">
+        <div class="well profile-page">
+        <center>
+             <%= image_tag user.avatar.url(:icon), class: "img-circle" %>
+            <h4 ><%=link_to user.name, show_user_path(id: user.id) %></h4>
+            <p> Location: <%=user.location %></p>
+            <p> Bio: <%= user.bio %></p>
+            <p><%=link_to "Following", following_path(id: user.id) %></p>
+            <p><%=link_to "Followers", followers_path(id: user.id) %></p>
+
+            <p>
+                <% if current_user.following.include?(user.id) %>
+                    <%= link_to "Following", unfollow_path(id: user.id), class: "btn btn-primary unfollow_btn" %>
+                <% else %>
+                    <% if current_user.id != user.id %>
+                        <%= link_to "Follow", now_following_path(id: user.id), class: "btn btn-primary" %>
+                    <% end %>
+                <% end %>
+            </p> 
+        </center>
+            
+    
+        </div> <!-- well profile-page-->
+    </div> <!-- col-lg-6-->
+     
+    <%end %>
+</div>
